@@ -2,7 +2,6 @@ import os
 import re
 import itchat
 import sys
-import argparse
 import time
 import userclass
 import imp
@@ -13,14 +12,6 @@ def ec():
     print('exit')
 
 if __name__ == '__main__':
-    if len(sys.argv)==1:
-        print("need user list,timecap,message.use -h to see more detail")
-        sys.exit()
-    parser=argparse.ArgumentParser(description="auto send messege program")
-    parser.add_argument('--timecap',dest="timecap",type=str,help="how long you want to send the message. default 1h")
-
-    localParser=parser.parse_args()
-
     control=1
     itchat.auto_login(loginCallback=lc, exitCallback=ec)
     while control:
@@ -32,11 +23,11 @@ if __name__ == '__main__':
         userlist=set(userlist1+userlist2)
         message=userset.message
         if userlist:
-            timecap=3600
-            if re.search(r'h|H',localParser.timecap):
-                timecap=float(re.sub(r'h|h',r'',localParser.timecap))*3600
-            if re.search(r'M|m',localParser.timecap):
-                timecap=float(re.sub(r'M|m',r'',localParser.timecap))*60
+            timecap=userset.time
+            if re.search(r'h|H',timecap):
+                timecap=float(re.sub(r'h|h',r'',timecap))*3600
+            if re.search(r'M|m',timecap):
+                timecap=float(re.sub(r'M|m',r'',timecap))*60
             for user in userlist:
                 print(user)
                 searchF=itchat.search_friends(user)
